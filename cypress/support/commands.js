@@ -1,4 +1,6 @@
-beforeEach(() => {
+
+
+ beforeEach(() => {  
   cy.setCookie('ebacstoreversion', 'v2');
   cy.visit('http://lojaebac.ebaconline.art.br/');
 });
