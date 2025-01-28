@@ -12,7 +12,7 @@
     "test:cypress": "cypress run",
     "start:test": "start-server-and-test start http://localhost:3000 test:cypress"
   },
-  "author": "ernestosbarbosa",
+  "author": "GabrielThiego",
   "license": "ISC",
   "dependencies": {
     "cypress": "^13.6.3",
