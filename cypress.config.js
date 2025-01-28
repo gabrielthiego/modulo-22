@@ -11,25 +11,23 @@ module.exports = defineConfig({
       // Configuração para a navegação entre abas no Chrome (se necessário)
       on('before:browser:launch', (browser = {}, launchOptions) => {
         if (browser.name === 'chrome') {
-          const debuggingPort = launchOptions.args.find(
-            (arg) => arg.slice(0, 23) === '--remote-debugging-port'
+          const debuggingPort = launchOptions.args.find((arg) =>
+            arg.startsWith('--remote-debugging-port')
           );
           if (debuggingPort) {
             const port = debuggingPort.split('=')[1];
             console.log(`Debugging port: ${port}`);
-            // Adicionar outras configurações, se necessário
           }
         }
         return launchOptions;
       });
 
-      // Defina a tarefa 'tabNavigation' ou remova, caso não precise
+      // Tarefa de navegação entre abas (caso necessário)
       on('task', {
         tabNavigation() {
-          // Adicione o comportamento desejado aqui para a navegação entre abas
           console.log("Navegando entre as abas...");
           return null;
-        }
+        },
       });
     },
     reporter: 'cypress-mochawesome-reporter',
@@ -37,11 +35,11 @@ module.exports = defineConfig({
       reportDir: 'cypress/reports',
       overwrite: false,
       html: true,
-      json: true
+      json: true,
     },
     env: {
-      MY_ENV: process.env.MY_ENV,
-      ebacStoreVersion: "v2"
-    }
-  }
+      MY_ENV: process.env.MY_ENV || '',
+      ebacStoreVersion: "v2",
+    },
+  },
 });
