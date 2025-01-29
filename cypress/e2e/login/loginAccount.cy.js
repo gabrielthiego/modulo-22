@@ -6,7 +6,7 @@ describe('Fluxo de Login - EBAC Store', () => {
   
     it('Deve fazer login com sucesso e verificar no Profile', () => {
       const userData = {
-        email: 'teste@exemplo.com',  
+        email: 'teste1@exemplo.com',  
         password: 'senha123',        
       };
   
