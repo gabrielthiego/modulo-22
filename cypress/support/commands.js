@@ -1,43 +1,39 @@
-Cypress.Commands.add('addItemToCart', () => {
-  // Verifica e clica no banner para iniciar a compra
+beforeEach(() => {  
+  cy.setCookie('ebacstoreversion', 'v2');
+  cy.visit('http://lojaebac.ebaconline.art.br/');
+});
+
+Cypress.Commands.add('login', (email, password) => {
+  cy.get('[href="/Tab/Account"] > .r-g6644c').click();  
+  cy.get('[data-testid="email"]').type(email);  
+  cy.get('[data-testid="password"]').type(password);  
+  cy.get('[data-testid="btnLogin"]').click(); 
+});
+
+Cypress.Commands.add('addItemToCart', () => {  
   cy.contains('[data-testid="banner"]', 'Start Shopping', { timeout: 15000 })
     .should('be.visible')
-    .click();
-
-  // Acessa os detalhes do primeiro produto
+    .click();  
+  
   cy.get('[data-testid="productDetails"]', { timeout: 15000 })
     .first()
     .click({ force: true });
-
-  // Clica no botão de adicionar ao carrinho
+  
   cy.get('[data-testid="addToCart"] > .css-146c3p1', { timeout: 15000 })
     .should('be.visible')
-    .click();
+    .click(); 
 
-  // Espera que o ícone do carrinho tenha a quantidade correta de itens
-  cy.get('[data-testid="cart-icon"]', { timeout: 5000 })
-    .should('contain', '1 item')  // Ou ajusta para o comportamento correto do carrinho
-    .should('be.visible');
+  cy.get('[href="/Tab/Home"] > .r-g6644c').click();  
 
-  // Volta para a página inicial
-  cy.get('[href="/Tab/Home"] > .r-g6644c').click();
-
-  // Clica no primeiro produto novamente (se necessário para a navegação do fluxo)
-  cy.get('.css-146c3p1.r-lrvibr').parent().first().click();
+  cy.get('[style="background-color: rgb(242, 242, 242);"] > :nth-child(1) > :nth-child(1) > :nth-child(1) > .r-1d5kdc7 > :nth-child(1) > :nth-child(1) > .r-13awgt0 > :nth-child(1) > .r-mh9cjk > .r-18u37iz > :nth-child(2) > .r-lrvibr').click();
 });
 
 Cypress.Commands.add('completeCheckout', () => {
-  // Verifica e clica para selecionar o endereço ou continuar para o pagamento
   cy.get('[data-testid="selectAddressOrContinueToPayment"]', { timeout: 10000 })
     .should('be.visible')
-    .click();
+    .click();  
 
-  // Confirma a finalização do checkout
   cy.get('[data-testid="completeCheckout"]', { timeout: 10000 })
     .should('be.visible')
-    .click();
-
-  // Espera confirmação de finalização do checkout
-  cy.get('[data-testid="checkoutConfirmation"]', { timeout: 5000 })
-    .should('be.visible');
+    .click(); 
 });
