@@ -1,0 +1,47 @@
+name: EBAC 22
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Configuração do Node.js
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '20'  # Atualizado para uma versão mais recente
+
+      # Cache para dependências Node.js
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Instalar dependências
+      - name: Install dependencies
+        run: npm install
+
+      # Rodar o Cypress
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v2
+        continue-on-error: true
+        with:
+          install-command: npm install
+          browser: chrome
+          start: npm start
+
+      # Publicar relatórios
+      - name: Publish Report
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./mochawesome-report
