@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Cypress Tests
 
 on:
   push:
@@ -7,19 +7,20 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  cypress-run:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout do código
+        uses: actions/checkout@v3
 
-    - name: Setup Node
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Instala o Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Instala dependências
+        run: npm install
 
-    - name: Run tests
-      run: npm test
+      - name: Roda os testes Cypress
+        run: npm run cy:run
