@@ -4,7 +4,6 @@
   "description": "Cypress Tests for EBAC",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx serverest",
     "cy:run": "npx cypress run",
     "cy:report": "npx mochawesome-merge ./mochawesome-report/mochawesome*.json > mochawesome-report/report.json && npx marge mochawesome-report/report.json"
@@ -22,6 +21,7 @@
     "cypress": "^14.0.0",
     "marge": "^1.0.1",
     "mochawesome": "^7.1.3",
-    "mochawesome-merge": "^4.3.0"
+    "mochawesome-merge": "^4.3.0",
+    "serverest": "^1.1.7"
   }
 }
