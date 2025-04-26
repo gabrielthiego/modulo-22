@@ -1,26 +1,63 @@
-name: Cypress Tests
+name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main  
   pull_request:
-    branches: [ main ]
+    branches:
+      - main  
 
 jobs:
-  cypress-run:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
+    
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Instala o Node
-        uses: actions/setup-node@v3
+     
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-
-      - name: Instala dependências
+          node-version: '20'  
+     
+      - name: Install dependencies
         run: npm install
 
-      - name: Roda os testes Cypress
-        run: npm run cy:run
+    
+      - name: Run tests
+        run: npm test
+
+    
+      - name: Build project
+        run: npm run build
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+     
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+     
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  
+          registry-url: https://npm.pkg.github.com/
+
+     
+      - name: Install dependencies
+        run: npm install
+
+      
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
